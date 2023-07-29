@@ -6,8 +6,7 @@ const APIKEY = Deno.env.get("TELEGRAM_API_KEY");
 const CHATID = Deno.env.get("TELEGRAM_CHAT_ID");
 if (!APIKEY || !CHATID) Deno.exit(1);
 
-const CRON_EXPRESSION =
-  "0 0 8 ? JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,OCT,NOV,DEC FRI *";
+const CRON_EXPRESSION = "0 0 8 ? 1-7,9-12 5";
 const bot = new grammy.Bot(APIKEY);
 bot.api.config.use(autoRetry());
 

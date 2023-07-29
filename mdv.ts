@@ -4,6 +4,13 @@ import { Seccio } from "./types.d.ts";
 
 const url = "https://maildelviernes.es/mdv-de-la-semana-2/";
 
+const DIC = {
+  CONTAINER: ".templateContainer .bodyContainer",
+  MCN_CODE_BLOCK: "mcnCodeBlock",
+  MCN_IMAGE_BLOCK: "mcnImageBlock",
+  HEADER_HEADLINES: ".HeaderHeadlines",
+};
+
 export const getMdv = async (): Promise<Seccio[]> => {
   const mdv = [];
   let seccio: Seccio = {
@@ -24,23 +31,23 @@ export const getMdv = async (): Promise<Seccio[]> => {
     if (!document) Deno.exit(1);
 
     const contingut: DOMTypes.Element | null = document.querySelector(
-      ".templateContainer .bodyContainer",
+      DIC.CONTAINER,
     );
     if (!contingut) Deno.exit(1);
 
     const tables = contingut.getElementsByTagName("table");
     tables.forEach((table: DOMTypes.Element) => {
-      if (table.className === "mcnCodeBlock") {
+      if (table.className === DIC.MCN_CODE_BLOCK) {
         if (!firstIteration && seccio.imatges.length > 0) mdv.push(seccio);
         firstIteration = false;
         seccio = {
-          titol: table.getElementsByClassName("HeaderHeadlines")[0]
+          titol: table.getElementsByClassName(DIC.HEADER_HEADLINES)[0]
             ?.textContent,
           imatges: [],
         };
       }
 
-      if (table.className === "mcnImageBlock") {
+      if (table.className === DIC.MCN_IMAGE_BLOCK) {
         const img = table.getElementsByTagName("img")[0]?.getAttribute("src");
         if (img) seccio.imatges.push(img);
       }
