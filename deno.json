@@ -1,0 +1,24 @@
+{
+  "version": "1.0.0",
+  "imports": {
+    "std/": "https://deno.land/std@0.196.0/",
+    "grammy/": "https://deno.land/x/grammy@v1.17.2/",
+    "autoRetry": "https://esm.sh/@grammyjs/auto-retry@1.1.1",
+    "croner/": "https://deno.land/x/croner@6.0.7/dist/",
+    "denoDom/": "https://deno.land/x/deno_dom@v0.1.38/"
+  },
+  "tasks": {
+    "start:main": "deno run --allow-read=. --allow-net --allow-env main.ts",
+    "start:cron": "deno run --allow-read=. --allow-net --allow-env cron.ts",
+    "compile:all": "deno task compile:main:linux && deno task compile:cron:linux && deno task compile:main:mac && deno task compile:cron:mac && deno task compile:main:macx64 && deno task compile:cron:macx64 && deno task compile:main:win && deno task compile:cron:win",
+    "compile:main:linux": "deno compile --allow-read=. --allow-net --allow-env main.ts -o ./dist/linux/mdv --target x86_64-unknown-linux-gnu",
+    "compile:cron:linux": "deno compile --allow-read=. --allow-net --allow-env cron.ts -o ./dist/linux/mdv-cron --target x86_64-unknown-linux-gnu",
+    "compile:main:mac": "deno compile --allow-read=. --allow-net --allow-env main.ts -o ./dist/mac/mdv --target aarch64-apple-darwin",
+    "compile:cron:mac": "deno compile --allow-read=. --allow-net --allow-env cron.ts -o ./dist/mac/mdv-cron --target aarch64-apple-darwin",
+    "compile:main:macx64": "deno compile --allow-read=. --allow-net --allow-env main.ts -o ./dist/macx64/mdv --target x86_64-apple-darwin",
+    "compile:cron:macx64": "deno compile --allow-read=. --allow-net --allow-env cron.ts -o ./dist/macx64/mdv-cron --target x86_64-apple-darwin",
+    "compile:main:win": "deno compile --allow-read=. --allow-net --allow-env main.ts -o ./dist/win/mdv.exe --target x86_64-pc-windows-msvc",
+    "compile:cron:win": "deno compile --allow-read=. --allow-net --allow-env cron.ts -o ./dist/win/mdv-cron.exe --target x86_64-pc-windows-msvc",
+    "docker:build": "docker build -t mdv-unnoficial-bot:1.0.0 -t mdv-unnoficial-bot:latest ."
+  }
+}

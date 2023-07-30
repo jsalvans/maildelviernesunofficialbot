@@ -1,5 +1,6 @@
-import { Cron } from "https://deno.land/x/croner@6.0.7/dist/croner.js";
+import { DEFAULT_CRON } from "./constants.ts";
+import { Cron } from "croner/croner.js";
 import MDV from "./mdv.ts";
 
-const CRON_EXPRESSION = Deno.env.get("MDV_CRON") ?? "0 0 8 ? 1-7,9-12 5";
+const CRON_EXPRESSION = Deno.env.get("MDV_CRON") ?? DEFAULT_CRON;
 new Cron(CRON_EXPRESSION, async () => await MDV());

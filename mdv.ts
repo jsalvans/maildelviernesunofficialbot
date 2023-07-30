@@ -1,5 +1,5 @@
-import "https://deno.land/std@0.196.0/dotenv/load.ts";
-import { existsSync } from "https://deno.land/std@0.195.0/fs/mod.ts";
+import "std/dotenv/load.ts";
+import { existsSync } from "std/fs/mod.ts";
 import { getMdv } from "./scrapper.ts";
 import { sendPhoto, sendText } from "./bot.ts";
 import { Mdv } from "./types.d.ts";

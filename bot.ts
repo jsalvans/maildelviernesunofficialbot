@@ -1,5 +1,5 @@
-import { Bot } from "https://deno.land/x/grammy@v1.17.2/mod.ts";
-import { autoRetry } from "https://esm.sh/@grammyjs/auto-retry@1.1.1";
+import { Bot } from "grammy/mod.ts";
+import { autoRetry } from "autoRetry";
 
 const APIKEY = Deno.env.get("TELEGRAM_API_KEY");
 const CHATID = Deno.env.get("TELEGRAM_CHAT_ID");
