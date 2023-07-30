@@ -1,6 +1,6 @@
 services:
   mdv:
-    image: mdv-unnoficial-bot:latest
+    image: mdv-unofficial-bot:latest
     environment:
       - TELEGRAM_API_KEY=put-here-your-telegam-api-key
       - TELEGRAM_CHAT_ID=put-here-your-telegam-chat-id

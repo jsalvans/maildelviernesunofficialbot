@@ -1,4 +1,5 @@
 {
+  "$schema": "https://raw.githubusercontent.com/denoland/deno/v1.35.3/cli/schemas/config-file.v1.json",
   "version": "1.0.0",
   "imports": {
     "std/": "https://deno.land/std@0.196.0/",
@@ -10,16 +11,26 @@
   "tasks": {
     "start:main": "deno run --allow-read=. --allow-net --allow-env main.ts",
     "start:cron": "deno run --allow-read=. --allow-net --allow-env cron.ts",
-    "compile:all": "deno task compile:main:linux && deno task compile:cron:linux && deno task compile:main:mac && deno task compile:cron:mac && deno task compile:main:macx64 && deno task compile:cron:macx64 && deno task compile:main:win && deno task compile:cron:win",
+
+    "compile:all": "deno task compile:linux && deno task compile:mac && deno task compile:macx64 && deno task compile:win",
+    
+    "compile:linux": "deno task compile:main:linux && deno task compile:cron:linux",
     "compile:main:linux": "deno compile --allow-read=. --allow-net --allow-env main.ts -o ./dist/linux/mdv --target x86_64-unknown-linux-gnu",
     "compile:cron:linux": "deno compile --allow-read=. --allow-net --allow-env cron.ts -o ./dist/linux/mdv-cron --target x86_64-unknown-linux-gnu",
+
+    "compile:mac": "deno task compile:main:mac && deno task compile:cron:mac",
     "compile:main:mac": "deno compile --allow-read=. --allow-net --allow-env main.ts -o ./dist/mac/mdv --target aarch64-apple-darwin",
     "compile:cron:mac": "deno compile --allow-read=. --allow-net --allow-env cron.ts -o ./dist/mac/mdv-cron --target aarch64-apple-darwin",
+
+    "compile:macx64": "deno task compile:main:macx64 && deno task compile:cron:macx64",
     "compile:main:macx64": "deno compile --allow-read=. --allow-net --allow-env main.ts -o ./dist/macx64/mdv --target x86_64-apple-darwin",
     "compile:cron:macx64": "deno compile --allow-read=. --allow-net --allow-env cron.ts -o ./dist/macx64/mdv-cron --target x86_64-apple-darwin",
+
+    "compile:win": "deno task compile:main:win && deno task compile:cron:win",
     "compile:main:win": "deno compile --allow-read=. --allow-net --allow-env main.ts -o ./dist/win/mdv.exe --target x86_64-pc-windows-msvc",
     "compile:cron:win": "deno compile --allow-read=. --allow-net --allow-env cron.ts -o ./dist/win/mdv-cron.exe --target x86_64-pc-windows-msvc",
-    "podman:build": "podman build -t mdv-unnoficial-bot:1.0.0 -t mdv-unnoficial-bot:latest .",
-    "docker:build": "docker build -t mdv-unnoficial-bot:1.0.0 -t mdv-unnoficial-bot:latest ."
+
+    "podman:build": "VERSION=$(cat version) && deno task compile:cron:linux && podman build -t mdv-unofficial-bot:$VERSION -t mdv-unofficial-bot:latest .",
+    "docker:build": "VERSION=$(cat version) && deno task compile:cron:linux && docker build -t mdv-unofficial-bot:$VERSION -t mdv-unofficial-bot:latest ."
   }
 }
