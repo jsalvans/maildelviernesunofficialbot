@@ -7,5 +7,6 @@ services:
       # - MDV_CRON=put-here-your-cron # optional, "0 0 8 ? 1-7,9-12 5" by default
     volumes:
       - last-mdv:/lastMdv
+    restart: unless-stopped
   volumes:
     last-mdv:
