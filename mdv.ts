@@ -1,61 +1,41 @@
-import { deno_dom as DOM } from "./deps.ts";
-import type { deno_dom as DOMTypes } from "./deps.ts";
-import { Seccio } from "./types.d.ts";
+import "https://deno.land/std@0.196.0/dotenv/load.ts";
+import { existsSync } from "https://deno.land/std@0.195.0/fs/mod.ts";
+import { getMdv } from "./scrapper.ts";
+import { sendPhoto, sendText } from "./bot.ts";
+import { Mdv } from "./types.d.ts";
 
-const url = "https://maildelviernes.es/mdv-de-la-semana-2/";
+const LAST_MDV = "./lastMdv";
 
-const DIC = {
-  CONTAINER: ".templateContainer .bodyContainer",
-  MCN_CODE_BLOCK: "mcnCodeBlock",
-  MCN_IMAGE_BLOCK: "mcnImageBlock",
-  HEADER_HEADLINES: ".HeaderHeadlines",
+const parseDate = (date: Date = new Date()): string => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const year = date.getFullYear();
+
+  const dayStr = day < 10 ? `0${day}` : `${day}`;
+  const monthStr = month < 10 ? `0${month}` : `${month}`;
+
+  return `${dayStr}/${monthStr}/${year}`;
 };
 
-export const getMdv = async (): Promise<Seccio[]> => {
-  const mdv = [];
-  let seccio: Seccio = {
-    titol: "",
-    imatges: [],
-  };
-  let firstIteration = true;
+const MDV = async () => {
+  const mdv: Mdv = await getMdv();
+  if (mdv.seccions.length === 0) return;
 
-  try {
-    const res = await fetch(url);
-    const html = await res.text();
-
-    const document: DOMTypes.HTMLDocument | null = new DOM.DOMParser()
-      .parseFromString(
-        html,
-        "text/html",
-      );
-    if (!document) Deno.exit(1);
-
-    const contingut: DOMTypes.Element | null = document.querySelector(
-      DIC.CONTAINER,
-    );
-    if (!contingut) Deno.exit(1);
-
-    const tables = contingut.getElementsByTagName("table");
-    tables.forEach((table: DOMTypes.Element) => {
-      if (table.className === DIC.MCN_CODE_BLOCK) {
-        if (!firstIteration && seccio.imatges.length > 0) mdv.push(seccio);
-        firstIteration = false;
-        seccio = {
-          titol: table.getElementsByClassName(DIC.HEADER_HEADLINES)[0]
-            ?.textContent,
-          imatges: [],
-        };
-      }
-
-      if (table.className === DIC.MCN_IMAGE_BLOCK) {
-        const img = table.getElementsByTagName("img")[0]?.getAttribute("src");
-        if (img) seccio.imatges.push(img);
-      }
-    });
-    mdv.push(seccio);
-  } catch (error) {
-    console.log(error);
+  const date = mdv.data ? new Date(mdv.data) : undefined;
+  if (date && existsSync(LAST_MDV)) {
+    const lastMdv = Deno.readTextFileSync(LAST_MDV);
+    if (!isNaN(Date.parse(lastMdv)) && date >= new Date(lastMdv)) return;
   }
+  Deno.writeTextFileSync(LAST_MDV, mdv.data ?? "");
 
-  return mdv;
+  await sendText(`#MDV ${parseDate(date)}`);
+  for (const seccio of mdv.seccions) {
+    await sendText(`== ${seccio.titol.toUpperCase()} ==`);
+    for (const img of seccio.imatges) {
+      await sendPhoto(img);
+    }
+  }
+  await sendText(`¡Hasta la próxima!`);
 };
+
+export default MDV;
