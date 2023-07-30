@@ -8,5 +8,6 @@ services:
     volumes:
       - last-mdv:/lastMdv
     restart: unless-stopped
-  volumes:
-    last-mdv:
+
+volumes:
+  last-mdv:
