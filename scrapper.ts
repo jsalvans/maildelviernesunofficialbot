@@ -46,7 +46,7 @@ const scrapMdv = async (): Promise<Mdv> => {
 
   const data = document.querySelector(
     'meta[property="article:modified_time"]',
-  )?.getAttribute("content");
+  )?.getAttribute("content") ?? undefined;
 
   const contingut: Element | null = document.querySelector(
     DIC.CONTAINER,
