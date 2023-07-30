@@ -19,6 +19,7 @@
     "compile:cron:macx64": "deno compile --allow-read=. --allow-net --allow-env cron.ts -o ./dist/macx64/mdv-cron --target x86_64-apple-darwin",
     "compile:main:win": "deno compile --allow-read=. --allow-net --allow-env main.ts -o ./dist/win/mdv.exe --target x86_64-pc-windows-msvc",
     "compile:cron:win": "deno compile --allow-read=. --allow-net --allow-env cron.ts -o ./dist/win/mdv-cron.exe --target x86_64-pc-windows-msvc",
+    "podman:build": "podman build -t mdv-unnoficial-bot:1.0.0 -t mdv-unnoficial-bot:latest .",
     "docker:build": "docker build -t mdv-unnoficial-bot:1.0.0 -t mdv-unnoficial-bot:latest ."
   }
 }
