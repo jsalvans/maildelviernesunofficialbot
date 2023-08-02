@@ -3,3 +3,4 @@ dist/
 
 .env
 lastMdv
+deno.lock
