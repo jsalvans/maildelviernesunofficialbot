@@ -8,7 +8,6 @@ WORKDIR /app
 
 COPY ./deno.json .
 COPY ./*.ts .
-RUN ls -la
 
 RUN deno cache --config deno.json *.ts
 CMD ["run", "--allow-net", "--allow-env", "--allow-read=.", "cron.ts"]

@@ -1,5 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/denoland/deno/v1.35.3/cli/schemas/config-file.v1.json",
   "version": "1.0.0",
   "imports": {
     "std/": "https://deno.land/std@0.196.0/",
@@ -12,7 +11,7 @@
     "start:main": "deno run --allow-read=. --allow-net --allow-env main.ts",
     "start:cron": "deno run --allow-read=. --allow-net --allow-env cron.ts",
 
-    "podman:build": "VERSION=$(cat version) && podman build -t mdv-unofficial-bot:$VERSION -t mdv-unofficial-bot:latest .",
-    "docker:build": "VERSION=$(cat version) && docker build -t mdv-unofficial-bot:$VERSION -t mdv-unofficial-bot:latest ."
+    "podman:build": "VERSION=$(cat deno.json | jq -r '.version') && podman build -t mdv-unofficial-bot:$VERSION -t mdv-unofficial-bot:latest .",
+    "docker:build": "VERSION=$(cat deno.json | jq -r '.version') && docker build -t mdv-unofficial-bot:$VERSION -t mdv-unofficial-bot:latest ."
   }
 }
