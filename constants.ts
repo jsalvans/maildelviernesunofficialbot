@@ -7,5 +7,5 @@ export const SCRAPPER_DIC = {
   CONTAINER: ".templateContainer .bodyContainer",
   MCN_CODE_BLOCK: "mcnCodeBlock",
   MCN_IMAGE_BLOCK: "mcnImageBlock",
-  HEADER_HEADLINES: ".HeaderHeadlines",
+  HEADER_HEADLINES: "HeaderHeadlines",
 };

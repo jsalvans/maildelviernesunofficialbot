@@ -8,8 +8,8 @@
     "denoDom/": "https://deno.land/x/deno_dom@v0.1.38/"
   },
   "tasks": {
-    "start:main": "deno run --allow-read=. --allow-net --allow-env main.ts",
-    "start:cron": "deno run --allow-read=. --allow-net --allow-env cron.ts",
+    "start:main": "deno run -A --unsafely-ignore-certificate-errors main.ts",
+    "start:cron": "deno run -A --unsafely-ignore-certificate-errors cron.ts",
 
     "podman:build": "VERSION=$(cat deno.json | jq -r '.version') && podman build -t mdv-unofficial-bot:$VERSION -t mdv-unofficial-bot:latest .",
     "docker:build": "VERSION=$(cat deno.json | jq -r '.version') && docker build -t mdv-unofficial-bot:$VERSION -t mdv-unofficial-bot:latest ."

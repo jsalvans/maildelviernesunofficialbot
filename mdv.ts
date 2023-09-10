@@ -24,7 +24,7 @@ const MDV = async () => {
   const date = mdv.data ? new Date(mdv.data) : undefined;
   if (date && existsSync(LAST_MDV)) {
     const lastMdv = Deno.readTextFileSync(LAST_MDV);
-    if (!isNaN(Date.parse(lastMdv)) && date >= new Date(lastMdv)) return;
+    if (isNaN(Date.parse(lastMdv)) || date <= new Date(lastMdv)) return;
   }
   Deno.writeTextFileSync(LAST_MDV, mdv.data ?? "");
 
