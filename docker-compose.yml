@@ -5,7 +5,6 @@ services:
     environment:
       - TELEGRAM_API_KEY=put-here-your-telegam-api-key
       - TELEGRAM_CHAT_ID=put-here-your-telegam-chat-id
-      # - MDV_CRON=put-here-your-cron # optional, "0 0 8 ? 1-7,9-12 5" by default
     volumes:
       - last-mdv:/lastMdv
     restart: unless-stopped
