@@ -1,13 +1,16 @@
-FROM denoland/deno:1.35.3
+FROM denoland/deno:alpine-1.36.4
+
+RUN apk add --no-cache tzdata
+ENV TZ=Europe/Madrid
+
+RUN echo "0 8 * * 5 /bin/deno -A /app/main.ts" >> /var/spool/cron/crontabs/root
 
 RUN mkdir /app
-RUN chown -R deno:deno /app
-
-USER deno
 WORKDIR /app
 
 COPY ./deno.json .
 COPY ./*.ts .
 
-RUN deno cache --config deno.json *.ts
-CMD ["run", "--allow-net", "--allow-env", "--allow-read=.", "cron.ts"]
+RUN date
+RUN /bin/deno cache --config deno.json *.ts
+CMD ["crond", "-f"]
